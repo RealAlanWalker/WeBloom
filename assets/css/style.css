@@ -36,12 +36,12 @@
   .hero-slide{position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(.4,0,.2,1); pointer-events:none;}
   .hero-slide.active{opacity:1; pointer-events:auto;}
   .hero-slide .slide-bg{position:absolute; inset:-8% -8% -8% -8%; background-size:cover; background-position:center 10%; background-repeat:no-repeat; will-change:transform; transition:transform 0.1s linear;}
-  .hero-slide:nth-child(1) .slide-bg{background-image:url('assets/images/hero-ring-bg.png');}
-  .hero-slide:nth-child(2) .slide-bg{background-image:url('assets/images/ring-bloom.png');}
-  .hero-slide:nth-child(3) .slide-bg{background-image:url('assets/images/ring-amber.webp');}
-  .hero-slide:nth-child(4) .slide-bg{background-image:url('assets/images/ring-garden.jpg');}
-  .hero-slide:nth-child(5) .slide-bg{background-image:url('assets/images/ring-glow.jpg');}
-  .hero-slide:nth-child(6) .slide-bg{background-image:url('assets/images/ring-glow.jpg');}
+  .hero-slide:nth-child(1) .slide-bg{background-image:url('../images/hero-ring-bg.png');}
+  .hero-slide:nth-child(2) .slide-bg{background-image:url('../images/ring-bloom.png');}
+  .hero-slide:nth-child(3) .slide-bg{background-image:url('../images/ring-amber.webp');}
+  .hero-slide:nth-child(4) .slide-bg{background-image:url('../images/ring-garden.jpg');}
+  .hero-slide:nth-child(5) .slide-bg{background-image:url('../images/ring-glow.jpg');}
+  .hero-slide:nth-child(6) .slide-bg{background-image:url('../images/ring-glow.jpg');}
   /* Fallback backgrounds if image fails to load */
   .hero-slide:nth-child(1) .slide-bg{background-color:#1a2615;}
   .hero-slide:nth-child(2) .slide-bg{background-color:#1a1418;}
@@ -261,7 +261,7 @@
 
   /* ── Product Inspiration — The Little Prince & the Rose ── */
   .inspiration-section{position:relative; background:#1a1a14; overflow:hidden; margin:0; padding:0; border-top:none;}
-  .inspiration-bg{position:absolute; inset:-10%; background-image:url('assets/images/inspiration-bg.png'); background-size:cover; background-position:center 30%; opacity:0.35; filter:saturate(0.7);}
+  .inspiration-bg{position:absolute; inset:-10%; background-image:url('../images/inspiration-bg.png'); background-size:cover; background-position:center 30%; opacity:0.35; filter:saturate(0.7);}
   .inspiration-overlay{position:absolute; inset:0; background:linear-gradient(180deg, rgba(26,26,20,0.2) 0%, rgba(26,26,20,0.7) 40%, rgba(26,26,20,0.9) 70%, rgba(26,26,20,1) 100%);}
   .inspiration-content{position:relative; z-index:2; max-width:800px; margin:0 auto; padding:clamp(3.5rem,8vw,6rem) clamp(1.5rem,5vw,3rem);}
   .inspiration-rose{text-align:center; margin-bottom:1.5rem;}
