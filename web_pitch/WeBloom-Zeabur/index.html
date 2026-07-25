@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WeBloom - a ring, and the garden it grows</title>
+<title>WeBloom — shared moments, quietly kept</title>
+<meta name="description" content="WeBloom turns time spent together into a private shared flower, with an optional proof anchored on Injective testnet.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -26,16 +27,16 @@
   #scroll-progress{position:fixed; top:0; left:0; width:0; height:3px; background:var(--gold); z-index:100; transition:width 50ms linear; pointer-events:none;}
 
   nav{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
-    padding:1.1rem clamp(1.25rem,4vw,3rem); background:rgba(253,247,223,0); backdrop-filter:blur(0px);
-    border-bottom:1px solid transparent; transition:background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;}
-  nav.scrolled{background:rgba(253,247,223,0.88); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
-  .wordmark{font-family:'Fraunces',serif; font-style:italic; font-size:1.3rem; background:none; border:none; color:#fff; cursor:pointer; transition:color 0.4s ease;}
+    padding:1.1rem clamp(1.25rem,4vw,3rem); background:rgba(253,247,223,0.82); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line); transition:background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;}
+  nav.scrolled{background:rgba(253,247,223,0.94); backdrop-filter:blur(14px); border-bottom:1px solid var(--line);}
+  .wordmark{font-family:'Fraunces',serif; font-style:italic; font-size:1.3rem; background:none; border:none; color:var(--paper); cursor:pointer; transition:color 0.4s ease;}
   nav.scrolled .wordmark{color:var(--paper);}
-  .nav-links{display:flex; gap:1.3rem; align-items:center; flex-wrap:wrap;}
+  .nav-links{display:flex; gap:1.35rem; align-items:center;}
   .nav-links button{background:none; border:none; cursor:pointer; font-family:'IBM Plex Mono',monospace;
-    font-size:0.7rem; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.75);
+    font-size:0.66rem; letter-spacing:0.075em; text-transform:uppercase; color:var(--paper-dim);
     padding:0.4rem 0; border-bottom:1px solid transparent; transition:color 0.3s ease, border-color 0.3s ease;}
-  .nav-links button:hover{color:#fff; border-color:rgba(255,255,255,0.5);}
+  .nav-links button:hover{color:var(--paper); border-color:var(--line-strong);}
   nav.scrolled .nav-links button{color:var(--paper-dim);}
   nav.scrolled .nav-links button:hover{color:var(--paper); border-color:var(--line-strong);}
 
@@ -210,9 +211,13 @@
 
   /* ── Video Poem / Digital Interaction Row ── */
   .video-poem-row{display:grid; grid-template-columns:0.85fr 1.15fr; gap:1.8rem; align-items:stretch; margin-bottom:1.8rem;}
-  .video-embed-card{background:var(--ink-soft); border:1px solid var(--line); border-radius:20px; overflow:hidden; position:relative; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:transform 0.3s ease, box-shadow 0.3s ease; max-height:320px;}
+  .video-embed-card{background:var(--ink-soft); border:1px solid var(--line); border-radius:16px; overflow:hidden; position:relative; aspect-ratio:4/3; display:flex; align-items:flex-end; cursor:pointer; transition:transform 0.3s ease, box-shadow 0.3s ease; max-height:320px; text-decoration:none; isolation:isolate;}
   .video-embed-card:hover{transform:translateY(-3px); box-shadow:0 8px 25px rgba(47,74,38,0.12);}
-  .video-embed-card .video-bg{position:absolute; inset:0; background:linear-gradient(135deg, #2F4A26 0%, #1a2615 40%, #3a2a1a 100%);}
+  .video-embed-card .video-bg{position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,24,18,0.02),rgba(20,24,18,0.78)),url('assets/embedded-08.png') center/cover no-repeat; transition:transform 0.55s cubic-bezier(.2,.7,.2,1);}
+  .video-embed-card:hover .video-bg{transform:scale(1.035);}
+  .video-embed-card .video-copy{position:relative; z-index:2; padding:1.35rem; color:#FDF7DF;}
+  .video-embed-card .video-copy small{display:block; margin-bottom:0.45rem; font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(253,247,223,0.64);}
+  .video-embed-card .video-copy strong{display:block; max-width:18ch; font-family:'Fraunces',serif; font-size:1.32rem; font-weight:400; font-style:italic; line-height:1.18;}
   .video-embed-card .video-play{position:relative; z-index:2; width:56px; height:56px; border-radius:50%; background:rgba(253,247,223,0.92); display:flex; align-items:center; justify-content:center; transition:transform 0.25s ease, background 0.25s ease;}
   .video-embed-card:hover .video-play{transform:scale(1.08); background:#FDF7DF;}
   .video-embed-card .video-play::after{content:''; display:block; width:0; height:0; border-left:16px solid var(--paper); border-top:10px solid transparent; border-bottom:10px solid transparent; margin-left:3px;}
@@ -221,7 +226,7 @@
   .video-embed-card .video-flower{position:absolute; top:15%; right:12%; font-size:2rem; opacity:0.5; z-index:1; animation:floatFlower 4s ease-in-out infinite;}
   @keyframes floatFlower{0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-6px) rotate(5deg);}}
 
-  .poem-card{background:var(--ink-soft); border:1px solid var(--line); border-radius:20px; padding:clamp(1.4rem,3vw,2rem); display:flex; flex-direction:column; justify-content:center;}
+  .poem-card{background:var(--ink-soft); border:1px solid var(--line); border-radius:16px; padding:clamp(1.4rem,3vw,2rem); display:flex; flex-direction:column; justify-content:center;}
   .poem-card .poem-icon{font-size:1.4rem; margin-bottom:0.6rem;}
   .poem-card .poem-text{font-family:'Fraunces',serif; font-style:italic; font-size:clamp(0.9rem,1.4vw,1rem); line-height:1.8; color:var(--paper); margin:0 0 0.8rem;}
   .poem-card .poem-attribution{font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--paper-dim); align-self:flex-end;}
@@ -303,8 +308,8 @@
   .connection-stat .stat-label{font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--paper-dim); margin-top:0.2rem;}
 
   /* SynBloom memory proof on Injective */
-  .onchain-section{position:relative; min-height:100svh; overflow:hidden; color:#FDF7DF; background:radial-gradient(circle at 15% 12%,rgba(139,154,114,0.18),transparent 30%),radial-gradient(circle at 88% 82%,rgba(209,142,92,0.17),transparent 34%),#172116; border-top:1px solid rgba(253,247,223,0.09);}
-  .onchain-section::before{content:''; position:absolute; inset:0; pointer-events:none; opacity:0.22; background-image:linear-gradient(rgba(253,247,223,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(253,247,223,0.05) 1px,transparent 1px); background-size:44px 44px; mask-image:linear-gradient(to bottom,black,transparent 78%);}
+  .onchain-section{position:relative; min-height:100svh; overflow:hidden; color:#FDF7DF; background:radial-gradient(circle at 12% 8%,rgba(139,154,114,0.15),transparent 32%),radial-gradient(circle at 82% 72%,rgba(209,142,92,0.12),transparent 34%),#172116; border-top:1px solid rgba(253,247,223,0.09);}
+  .onchain-section::before{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(110deg,rgba(253,247,223,0.025),transparent 34%);}
   .onchain-inner{position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,3rem);}
   .onchain-head{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2rem; align-items:start; margin-bottom:2rem;}
   .chain-kicker{display:flex; align-items:center; gap:0.7rem; margin:0 0 0.8rem; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.15em; font-size:0.68rem; color:#E7B184;}
@@ -314,12 +319,12 @@
   .onchain-lead{max-width:680px; margin:1.25rem 0 0; color:rgba(253,247,223,0.68); line-height:1.75; font-size:clamp(0.94rem,1.4vw,1.08rem);}
   .chain-network{justify-self:end; display:inline-flex; align-items:center; gap:0.55rem; border:1px solid rgba(253,247,223,0.16); background:rgba(253,247,223,0.06); border-radius:999px; padding:0.65rem 0.9rem; font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.05em; white-space:nowrap; color:rgba(253,247,223,0.72);}
   .chain-network i{width:8px; height:8px; border-radius:50%; background:#76B96A; box-shadow:0 0 12px rgba(118,185,106,0.7);}
-  .chain-flow{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; overflow:hidden; border:1px solid rgba(253,247,223,0.1); border-radius:18px; background:rgba(253,247,223,0.1); margin:2rem 0;}
-  .chain-flow-item{position:relative; min-height:108px; padding:1rem 1.1rem; background:rgba(19,29,18,0.92);}
+  .chain-flow{display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(1.2rem,3vw,2.6rem); border-top:1px solid rgba(253,247,223,0.13); border-bottom:1px solid rgba(253,247,223,0.13); margin:2.2rem 0; padding:1.3rem 0;}
+  .chain-flow-item{position:relative; min-height:74px; padding:0; background:transparent;}
   .chain-flow-item b{display:block; margin-bottom:0.55rem; font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.09em; text-transform:uppercase; color:#E7B184;}
   .chain-flow-item span{display:block; color:rgba(253,247,223,0.64); font-size:0.78rem; line-height:1.5;}
   .chain-workspace{display:grid; grid-template-columns:minmax(0,1.08fr) minmax(320px,0.92fr); gap:1rem; align-items:stretch;}
-  .chain-card{border:1px solid rgba(253,247,223,0.12); background:rgba(253,247,223,0.055); border-radius:24px; padding:clamp(1.2rem,3vw,1.8rem); box-shadow:0 24px 70px rgba(0,0,0,0.16);}
+  .chain-card{border:1px solid rgba(253,247,223,0.13); background:rgba(253,247,223,0.045); border-radius:18px; padding:clamp(1.2rem,3vw,1.8rem); box-shadow:0 24px 70px rgba(0,0,0,0.12);}
   .chain-card-title{display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.2rem;}
   .chain-card-title h3{font-size:1.25rem; font-style:italic; color:#FDF7DF;}
   .chain-step{font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(253,247,223,0.42);}
@@ -452,9 +457,18 @@
   @media (max-width:640px){
     .hero-title{font-size:clamp(2rem,9vw,3rem);}
     .hero-tagline{font-size:clamp(0.8rem,3vw,1rem);}
-    nav{padding:0.8rem 1rem;}
-    .nav-links{gap:0.8rem;}
-    .nav-links button{font-size:0.6rem;}
+    nav{padding:0.82rem 1rem; background:rgba(253,247,223,0.9);}
+    nav.scrolled{background:rgba(253,247,223,0.92);}
+    .nav-links{gap:0;}
+    .nav-links button{display:none;}
+    .nav-links .nav-primary{display:inline-flex; padding:0.58rem 0.85rem; border:1px solid var(--line-strong); border-radius:999px; color:var(--paper);}
+    nav.scrolled .nav-links .nav-primary{border-color:var(--line-strong); color:var(--paper);}
+    .hero-content{padding-left:1.2rem; padding-right:1.2rem;}
+    .hero-cta{gap:0.7rem;}
+    .hero-cta .btn{width:100%; max-width:250px; justify-content:center;}
+    .carousel-dots{bottom:3.9rem;}
+    .scroll-cue{display:none;}
+    .video-poem-row{grid-template-columns:1fr;}
     .calendar-wrap{padding:1rem 0.8rem;}
     .physio-grid{grid-template-columns:repeat(2,1fr);}
     .encounter-card{grid-template-columns:1fr; text-align:center;}
@@ -475,15 +489,12 @@
 <div id="scroll-progress" role="none" aria-hidden="true"></div>
 <nav id="navbar" role="navigation">
   <button class="wordmark" onclick="window.scrollTo({top:0,behavior:'smooth'})">WeBloom</button>
-  <div class="nav-links">
-    <button onclick="scrollToId('about')">About</button>
-    <button onclick="scrollToId('features')">Features</button>
-    <button onclick="scrollToId('calendar')">Calendar</button>
-    <button onclick="scrollToId('reflection')">Reflection</button>
-    <button onclick="scrollToId('connection')">SynBloom</button>
-    <button onclick="scrollToId('onchain')">On-chain</button>
-    <button onclick="scrollToId('inspiration')">Inspiration</button>
-    <button onclick="scrollToId('product')">WeBloom Ring</button>
+  <div class="nav-links" aria-label="Page sections">
+    <button onclick="scrollToId('about')">Story</button>
+    <button onclick="scrollToId('calendar')">Garden</button>
+    <button onclick="scrollToId('connection')">Shared moment</button>
+    <button class="nav-primary" onclick="scrollToId('onchain')">Memory proof</button>
+    <button onclick="scrollToId('product')">The ring</button>
   </div>
 </nav>
 
@@ -497,12 +508,12 @@
     <div class="hero-slide" data-index="5"><div class="slide-bg" aria-hidden="true"></div><div class="slide-overlay" aria-hidden="true"></div><div class="slide-gradient" aria-hidden="true"></div><div class="slide-scrim" aria-hidden="true"></div><div class="slide-glow" aria-hidden="true"></div></div>
   </div>
   <div class="hero-content" id="hero-content">
-    <p class="hero-eyebrow" id="hero-eyebrow">A new kind of wearable</p>
+    <p class="hero-eyebrow" id="hero-eyebrow">A quiet record of time together</p>
     <h1 class="hero-title" id="hero-title">We<span class="highlight">Bloom</span></h1>
-    <p class="hero-tagline" id="hero-tagline">A ring, and the garden it grows.<br>Designed for presence, not distraction.</p>
+    <p class="hero-tagline" id="hero-tagline">Two people meet. Two flowers grow.<br>The words stay private; the moment can be proven.</p>
     <div class="hero-cta">
-      <button class="btn btn-primary" onclick="scrollToId('about')">Discover</button>
-      <button class="btn btn-ghost" onclick="scrollToId('features')">Explore features</button>
+      <button class="btn btn-primary" onclick="scrollToId('about')">See how it works</button>
+      <button class="btn btn-ghost" onclick="scrollToId('onchain')">Create a shared proof</button>
     </div>
   </div>
   <div class="carousel-arrows" aria-label="Slide navigation">
@@ -565,8 +576,11 @@
     <h2 class="reveal reveal-delay-1">Your garden, day by day.</h2>
     <p class="lead reveal reveal-delay-2">Each square is a day the ring was with you. Deeper green means more moments bloomed — quiet days are pale, full days are rich. <strong>Click any day</strong> to see your body's rhythms and the friends you shared time with.</p>
     <div class="video-poem-row reveal reveal-delay-3">
-      <div class="video-embed-card"><iframe src="https://www.xiaohongshu.com/explore/6a64c3dc000000000402bfd6?xsec_token=ABkapeaE-HDJtDvAsVfY2FitDRLdkqLE9awx0TziVmK8Q=&xsec_source=pc_user" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:20px;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" title="WeBloom on Xiaohongshu"></iframe></div>
-      <div class="poem-card"><div class="poem-icon">✿</div><p class="poem-text">以数据为墨，情感为笔——每一朵花都是一次相遇的印记，每一抹绿都是一段心绪的涟漪。WeBloom将心跳、步伐、体温与对话编织成可视化的诗意图谱，让科技不再冷冰冰地计数，而是温柔地记住：那天你与谁并肩走过，说了什么让彼此安静下来的话，在哪里同时停下脚步，为什么笑得前仰后合。这不是仪表盘，是一座会呼吸的关系花园，一座用真实瞬间浇灌的记忆森林。每一次回望，都是一次重新绽放。</p><span class="poem-attribution">— WeBloom · 数字交互 · 关系可视化</span><a class="poem-link" href="https://www.xiaohongshu.com/explore/6a64c3dc000000000402bfd6" target="_blank" rel="noopener">↗ 在小红书观看完整视频</a></div>
+      <a class="video-embed-card" href="https://www.xiaohongshu.com/explore/6a64c3dc000000000402bfd6" target="_blank" rel="noopener noreferrer" aria-label="Watch the WeBloom installation film on Xiaohongshu">
+        <span class="video-bg" aria-hidden="true"></span>
+        <span class="video-copy"><small>Installation study · TouchDesigner</small><strong>See what happens when two rings meet ↗</strong></span>
+      </a>
+      <div class="poem-card"><div class="poem-icon" aria-hidden="true">✿</div><p class="poem-text">WeBloom does not keep a transcript of the day. It keeps a small trace of being there: the pause before a laugh, a walk taken at the same pace, a moment both people chose to remember.</p><span class="poem-attribution">A shared garden, not a dashboard</span><a class="poem-link" href="https://www.xiaohongshu.com/explore/6a64c3dc000000000402bfd6" target="_blank" rel="noopener noreferrer">Watch the installation film ↗</a></div>
     </div>
     <div class="reveal reveal-delay-4">
       <div class="calendar-wrap">
@@ -591,7 +605,7 @@
   <section class="section" id="reflection">
     <div class="section-head reveal">
       <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M12,7 C15,7 16,9.5 14,11 C12.5,12 10,11.5 10,9.5 C10,8 11.5,7.5 12.5,8.5"/></svg>
-      <p class="eyebrow" style="margin:0;">BloomNote - AI Reflection</p>
+      <p class="eyebrow" style="margin:0;">BloomNote · Daily reflection</p>
     </div>
     <h2 class="reveal reveal-delay-1">Not a summary. A reflection.</h2>
     <p class="lead reveal reveal-delay-2">Every evening, WeBloom writes one sentence -- not a log of what happened, but a small reflection on what it felt like.</p>
@@ -631,9 +645,9 @@
       </div>
       <div class="connection-text reveal reveal-delay-3">
         <h2>When rings touch,<br>gardens entwine.</h2>
-        <p>SynBloom is not a handshake protocol — it's a quiet acknowledgment between two people wearing WeBloom. When rings come close, they each record the encounter: heart rate at the moment of meeting, the duration you stayed together, the rhythm of your conversation.</p>
-        <p>Later that evening, both gardens bloom with the same new flower — a shared memory, grown from two perspectives. No notifications, no pings. Just a petal that says: <em>this moment mattered to both of us</em>.</p>
-        <div class="connection-stat"><div class="stat-item"><div class="stat-num">1,247</div><div class="stat-label">SynBloom moments<br>recorded in beta</div></div><div class="stat-item"><div class="stat-num">94%</div><div class="stat-label">of users felt more<br>connected after</div></div><div class="stat-item"><div class="stat-num">2.3s</div><div class="stat-label">Average ring<br>recognition time</div></div></div>
+        <p>When two rings come close, each person chooses whether to keep the encounter. A shared flower appears only when both sides agree.</p>
+        <p>The memory stays readable only on the devices that made it. What can travel farther is a small fingerprint: enough to prove the same moment exists, never enough to reveal what it said.</p>
+        <div class="connection-stat"><div class="stat-item"><div class="stat-num">2</div><div class="stat-label">people choose<br>the moment</div></div><div class="stat-item"><div class="stat-num">1</div><div class="stat-label">shared flower<br>grows for both</div></div><div class="stat-item"><div class="stat-num">0</div><div class="stat-label">readable words<br>published on-chain</div></div></div>
       </div>
     </div>
   </section>
@@ -642,23 +656,22 @@
     <div class="onchain-inner">
       <div class="onchain-head reveal">
         <div>
-          <p class="chain-kicker">SynBloom x Injective</p>
+          <p class="chain-kicker">SynBloom · Injective</p>
           <h2 class="onchain-title">A memory held by two.<br><span>Proven on-chain.</span></h2>
-          <p class="onchain-lead">Two rings shape one private BloomNote. This demo turns that shared moment into a salted SHA-256 fingerprint, then anchors the proof to Injective EVM Testnet without publishing the names or memory itself.</p>
+          <p class="onchain-lead">Write one memory together and grow a flower for each person. The readable words stay in this browser; only a salted fingerprint is sent to Injective testnet.</p>
         </div>
         <div class="chain-network"><i aria-hidden="true"></i>Injective EVM Testnet &middot; Chain 1439</div>
       </div>
 
-      <div class="chain-flow reveal reveal-delay-1" aria-label="SynBloom on-chain architecture">
-        <div class="chain-flow-item"><b>01 &middot; Edge AI</b><span>Heart, voice and motion become one private BloomNote.</span></div>
-        <div class="chain-flow-item"><b>02 &middot; Local proof</b><span>The browser adds a random salt and creates a SHA-256 fingerprint.</span></div>
-        <div class="chain-flow-item"><b>03 &middot; Injective</b><span>A zero-value transaction carries only the proof in its calldata.</span></div>
-        <div class="chain-flow-item"><b>04 &middot; Shared trust</b><span>Both people can verify the same bloom in Blockscout.</span></div>
+      <div class="chain-flow reveal reveal-delay-1" aria-label="How a shared memory is anchored">
+        <div class="chain-flow-item"><b>Write together</b><span>Two names, one private memory, and consent from both people.</span></div>
+        <div class="chain-flow-item"><b>Grow the proof</b><span>A random salt and SHA-256 fingerprint shape the pair of flowers locally.</span></div>
+        <div class="chain-flow-item"><b>Keep the receipt</b><span>Injective stores the fingerprint, while the readable memory stays with you.</span></div>
       </div>
 
       <div class="chain-workspace">
         <div class="chain-card reveal reveal-delay-2">
-          <div class="chain-card-title"><h3>Create a private memory capsule</h3><span class="chain-step">Steps 1-2</span></div>
+          <div class="chain-card-title"><h3>Write the moment you share</h3><span class="chain-step">Private by default</span></div>
           <form class="chain-form" id="synbloom-form" novalidate>
             <div class="chain-field">
               <label for="bloom-person-a">Your name</label>
@@ -682,7 +695,7 @@
               <span>I understand the wallet addresses and proof transaction are public and permanent. Names and memory text stay in this browser and in the capsule I choose to download.</span>
             </label>
             <div class="chain-actions">
-              <button class="chain-btn chain-btn-primary" type="submit" id="grow-bloom">Grow our twin bloom</button>
+              <button class="chain-btn chain-btn-primary" type="submit" id="grow-bloom">Create our two flowers</button>
               <button class="chain-btn chain-btn-secondary" type="button" id="connect-injective">Connect wallet</button>
             </div>
             <div class="wallet-summary" aria-live="polite"><span>Wallet</span><strong id="wallet-label">Not connected</strong></div>
@@ -690,7 +703,7 @@
         </div>
 
         <div class="chain-card chain-preview reveal reveal-delay-3">
-          <div class="chain-card-title"><h3>Your shared proof</h3><span class="chain-step">Steps 3-4</span></div>
+          <div class="chain-card-title"><h3>Your two flowers</h3><span class="chain-step">One shared fingerprint</span></div>
           <div class="twin-stage" aria-label="Generated twin flower preview">
             <div class="twin-bloom" id="twin-bloom" aria-hidden="true">
               <span class="bloom-stem bloom-stem-a"></span><span class="bloom-stem bloom-stem-b"></span><span class="bloom-leaf bloom-leaf-a"></span><span class="bloom-leaf bloom-leaf-b"></span>
@@ -700,7 +713,7 @@
             </div>
           </div>
           <div class="bloom-proof-code" id="bloom-proof-code">BLOOM AWAITS TWO PEOPLE</div>
-          <button class="chain-btn chain-btn-accent" type="button" id="anchor-memory" disabled>Anchor proof to Injective</button>
+          <button class="chain-btn chain-btn-accent" type="button" id="anchor-memory" disabled>Save proof on Injective</button>
           <div class="chain-status" id="chain-status" data-state="idle" role="status" aria-live="polite">
             <strong id="chain-status-title">Ready when you are</strong>
             <span id="chain-status-detail">Grow a twin bloom, connect a wallet and accept the privacy notice.</span>
@@ -769,7 +782,7 @@
         <div class="spec-item"><span class="spec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 C10 6 6 8 6 12 C6 16 12 20 12 22 C12 20 18 16 18 12 C18 8 14 6 12 2 Z"/><line x1="12" y1="12" x2="12" y2="17"/></svg></span><div class="spec-value">3.2g</div><div class="spec-label">Ultralight</div></div>
         <div class="spec-item"><span class="spec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/><path d="M12 15 L12 2"/><path d="M4 20 L20 20"/></svg></span><div class="spec-value">BT 5.3</div><div class="spec-label">Bluetooth LE</div></div>
         <div class="spec-item"><span class="spec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="18"/><circle cx="12" cy="18" r="3"/><line x1="7" y1="11" x2="12" y2="3"/><line x1="17" y1="11" x2="12" y2="3"/></svg></span><div class="spec-value">±0.1°C</div><div class="spec-label">Skin temp</div></div>
-        <div class="spec-item"><span class="spec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="8" cy="8" r="1" fill="var(--amber)"/><circle cx="16" cy="16" r="1" fill="var(--amber)"/></svg></span><div class="spec-value">Edge AI</div><div class="spec-label">On-device ML</div></div>
+        <div class="spec-item"><span class="spec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="8" cy="8" r="1" fill="var(--amber)"/><circle cx="16" cy="16" r="1" fill="var(--amber)"/></svg></span><div class="spec-value">On-device</div><div class="spec-label">Private processing</div></div>
       </div>
       <div class="purchase-row reveal reveal-delay-5">
         <div class="purchase-info"><div class="price">From $1,003</div><div class="price-note">Free shipping · 30-day trial · 2-year warranty</div></div>
@@ -1421,14 +1434,13 @@
       const heroTagline = document.getElementById('hero-tagline');
       let currentIndex = 0;
       let autoTimer = null;
-      const AUTO_INTERVAL = 6000;
 
       // Slide content config
       const slideContent = [
         {
-          eyebrow: 'A new kind of wearable',
+          eyebrow: 'A quiet record of time together',
           title: 'We<span class=\"highlight\">Bloom</span>',
-          tagline: 'A ring, and the garden it grows.<br>Designed for presence, not distraction.',
+          tagline: 'Two people meet. Two flowers grow.<br>The words stay private; the moment can be proven.',
         },
         {
           eyebrow: 'Inspired by The Little Prince',
@@ -1503,6 +1515,8 @@
 
       // Keyboard navigation
       document.addEventListener('keydown', function(e){
+        const tag = e.target && e.target.tagName;
+        if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || window.scrollY > document.getElementById('hero').offsetHeight) return;
         if(e.key === 'ArrowLeft') prevSlide();
         else if(e.key === 'ArrowRight') nextSlide();
       });
@@ -1522,15 +1536,13 @@
       // Auto-advance
       function resetAutoAdvance(){
         clearTimeout(autoTimer);
-        autoTimer = setTimeout(nextSlide, AUTO_INTERVAL);
       }
 
       // Pause on hover
       hero.addEventListener('mouseenter', ()=>{ clearTimeout(autoTimer); });
       hero.addEventListener('mouseleave', ()=>{ resetAutoAdvance(); });
 
-      // Start auto-advance
-      resetAutoAdvance();
+      // The story advances only when the visitor asks it to.
     })();
 
     // ── Scroll & reveal ──
