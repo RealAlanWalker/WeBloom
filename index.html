@@ -1,0 +1,442 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>WeBloom - a ring, and the garden it grows</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <style>
+   :root{
+     --ink:#FDF7DF; --ink-soft:#F4ECC9; --ink-softer:#EBDFAE;
+     --paper:#2F4A26; --paper-dim:#556052;
+     --rose:#BA8D87; --amber:#D18E5C; --sage:#8B9A72; --gold:#7A5E28; --lavender:#9C7F94;
+     --line:rgba(47,74,38,0.14); --line-strong:rgba(47,74,38,0.22);
+   }
+   *{box-sizing:border-box;}
+   html{scroll-behavior:smooth;}
+   body{margin:0; background:var(--ink); color:var(--paper); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+   .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+   a{color:inherit;} button{font-family:inherit;}
+   .eyebrow{font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.14em; font-size:0.72rem; font-weight:500; color:var(--gold);}
+   .mono{font-family:'IBM Plex Mono',monospace;}
+   h1,h2,h3,.serif{font-family:'Fraunces',serif; font-weight:400; margin:0;}
+   :focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-radius:2px;}
+ 
+   #scroll-progress{position:fixed; top:0; left:0; width:0; height:3px; background:var(--gold); z-index:100; transition:width 50ms linear; pointer-events:none;}
+ 
+   nav{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
+     padding:1.1rem clamp(1.25rem,4vw,3rem); background:rgba(253,247,223,0); backdrop-filter:blur(0px);
+     border-bottom:1px solid transparent; transition:background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;}
+   nav.scrolled{background:rgba(253,247,223,0.88); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+   .wordmark{font-family:'Fraunces',serif; font-style:italic; font-size:1.3rem; background:none; border:none; color:#fff; cursor:pointer; transition:color 0.4s ease;}
+   nav.scrolled .wordmark{color:var(--paper);}
+   .nav-links{display:flex; gap:1.3rem; align-items:center; flex-wrap:wrap;}
+   .nav-links button{background:none; border:none; cursor:pointer; font-family:'IBM Plex Mono',monospace;
+     font-size:0.7rem; letter-spacing:0.09em; text-transform:uppercase; color:rgba(255,255,255,0.75);
+     padding:0.4rem 0; border-bottom:1px solid transparent; transition:color 0.3s ease, border-color 0.3s ease;}
+   .nav-links button:hover{color:#fff; border-color:rgba(255,255,255,0.5);}
+   nav.scrolled .nav-links button{color:var(--paper-dim);}
+   nav.scrolled .nav-links button:hover{color:var(--paper); border-color:var(--line-strong);}
+ 
+   .hero{position:relative; min-height:100vh; display:flex; align-items:flex-start; justify-content:center;
+     overflow:hidden; background:#1a2615;}
+   .hero-bg{position:absolute; inset:-8% -8% -8% -8%; background-image:url('hero-ring-bg.png');
+     background-size:cover; background-position:center 10%; background-repeat:no-repeat;
+     will-change:transform; transition:transform 0.1s linear;}
+   .hero-overlay{position:absolute; inset:0;
+     background:linear-gradient(180deg, rgba(26,38,21,0.15) 0%, rgba(26,38,21,0.1) 40%, rgba(253,247,223,0) 65%, rgba(253,247,223,0.4) 85%, rgba(253,247,223,0.7) 100%);
+     pointer-events:none;}
+   .hero-overlay-top{position:absolute; inset:0;
+     background:linear-gradient(180deg, rgba(26,38,21,0.45) 0%, rgba(26,38,21,0.1) 50%, transparent 100%);
+     pointer-events:none;}
+   .hero-scrim{position:absolute; inset:0;
+     background:radial-gradient(ellipse 140% 50% at 50% 55%, transparent 0%, rgba(26,38,21,0.12) 100%);
+     pointer-events:none;}
+ 
+   .ring-glow{position:absolute; left:50%; top:55%; width:min(65vw,700px); aspect-ratio:1/1;
+     transform:translate(-50%,-50%); pointer-events:none; z-index:2;
+     background:radial-gradient(circle, rgba(186,141,135,0.15) 0%, rgba(186,141,135,0.06) 40%, transparent 70%);
+     border-radius:50%; transition:opacity 0.3s ease, transform 0.3s ease;}
+ 
+   .hero-content{position:relative; z-index:5; text-align:center;
+     padding:clamp(5rem,14vh,9rem) 1.5rem 0; max-width:800px; width:100%;}
+   .hero-eyebrow{font-family:'IBM Plex Mono',monospace; letter-spacing:0.18em; text-transform:uppercase;
+     font-size:clamp(0.55rem,1vw,0.7rem); color:rgba(253,247,223,0.6); margin-bottom:0.8rem;
+     opacity:0; animation:fadeIn 1.2s ease forwards 0.3s;}
+   .hero-title{font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+     font-size:clamp(2.6rem,7vw,5.5rem); line-height:1.05; letter-spacing:-0.01em;
+     color:#FDF7DF; margin:0; text-shadow:0 2px 30px rgba(0,0,0,0.25);
+     opacity:0; transform:translateY(30px); animation:heroTitleIn 1s cubic-bezier(.22,.97,.44,1) forwards 0.6s;}
+   .hero-title .highlight{color:#D18E5C;}
+   .hero-tagline{font-family:'Inter',sans-serif; font-weight:400; font-size:clamp(0.9rem,1.6vw,1.2rem);
+     color:rgba(253,247,223,0.75); margin:0.6rem auto 0; max-width:540px; line-height:1.6;
+     text-shadow:0 1px 20px rgba(0,0,0,0.2);
+     opacity:0; transform:translateY(20px); animation:heroTitleIn 0.9s cubic-bezier(.22,.97,.44,1) forwards 0.9s;}
+   .hero-cta{display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:clamp(1.2rem,3vh,2rem);
+     opacity:0; transform:translateY(20px); animation:heroTitleIn 0.9s cubic-bezier(.22,.97,.44,1) forwards 1.2s;}
+   .hero-cta .btn{display:inline-flex; align-items:center; gap:0.5rem; padding:0.85em 1.9em; border-radius:999px;
+     font-size:0.9rem; font-weight:500; cursor:pointer; transition:transform 0.2s ease, background 0.2s ease, border-color 0.2s ease; border:1px solid transparent;}
+   .hero-cta .btn:hover{transform:translateY(-2px);}
+   .hero-cta .btn-primary{background:#FDF7DF; color:var(--paper); border-color:#FDF7DF;}
+   .hero-cta .btn-primary:hover{background:#fff;}
+   .hero-cta .btn-ghost{background:transparent; color:#FDF7DF; border-color:rgba(253,247,223,0.35);}
+   .hero-cta .btn-ghost:hover{border-color:rgba(253,247,223,0.7); background:rgba(253,247,223,0.08);}
+ 
+   @keyframes fadeIn{to{opacity:1;}}
+   @keyframes heroTitleIn{to{opacity:1; transform:translateY(0);}}
+ 
+   .scroll-cue{position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); z-index:10;
+     display:flex; flex-direction:column; align-items:center; gap:0.4rem; color:rgba(253,247,223,0.5);
+     opacity:1; transition:opacity 0.5s ease; cursor:pointer; background:none; border:none;
+     animation:cueFadeIn 1.5s ease forwards 2s; opacity:0;}
+   .scroll-cue.hidden{opacity:0; pointer-events:none;}
+   @keyframes cueFadeIn{to{opacity:1;}}
+   .scroll-cue span{font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase;}
+   .scroll-cue .mouse{width:20px; height:32px; border:2px solid rgba(253,247,223,0.4); border-radius:12px; position:relative;}
+   .scroll-cue .mouse::after{content:''; position:absolute; top:6px; left:50%; transform:translateX(-50%);
+     width:2px; height:6px; background:rgba(253,247,223,0.5); border-radius:2px;
+     animation:scrollWheel 1.8s ease-in-out infinite;}
+   @keyframes scrollWheel{0%,100%{transform:translateX(-50%) translateY(0); opacity:1;}
+     50%{transform:translateX(-50%) translateY(8px); opacity:0.3;}}
+ 
+   .content-section{position:relative; z-index:10; background:var(--ink);}
+   .section{padding:clamp(3.2rem,7vw,5.5rem) clamp(1.25rem,4vw,3rem); max-width:1100px; margin:0 auto;
+     border-top:1px solid var(--line);}
+   .section:first-child{border-top:none;}
+   .section-head{display:flex; align-items:center; gap:0.7rem; margin-bottom:0.5rem;}
+   .section-icon{width:22px; height:22px; flex-shrink:0;}
+   .section-icon *{fill:none; stroke:var(--gold); stroke-width:1.3;}
+   .section h2{font-style:italic; font-size:clamp(1.5rem,3vw,2.2rem); margin:0.5rem 0 1.1rem;}
+   .section > p.lead{color:var(--paper-dim); line-height:1.7; max-width:56ch; margin:0 0 1.8rem;}
+ 
+   .reveal{opacity:0; transform:translateY(40px); transition:opacity 0.7s ease, transform 0.7s cubic-bezier(.22,.97,.44,1);}
+   .reveal.visible{opacity:1; transform:translateY(0);}
+   .reveal-delay-1{transition-delay:0.1s;}
+   .reveal-delay-2{transition-delay:0.2s;}
+   .reveal-delay-3{transition-delay:0.3s;}
+   .reveal-delay-4{transition-delay:0.4s;}
+   .reveal-delay-5{transition-delay:0.5s;}
+ 
+   .intro-grid{display:grid; grid-template-columns:1.2fr 0.8fr; gap:clamp(2rem,5vw,4rem); align-items:center;}
+   .intro-grid p{color:var(--paper-dim); line-height:1.7; margin:0; max-width:52ch;}
+   .ring-viz{display:flex; justify-content:center;}
+   .ring-glyph{width:min(180px,65%); height:auto;}
+   .pulse{fill:none; stroke:var(--rose); stroke-width:1.5; opacity:0; transform-origin:120px 120px; animation:pulse 4.5s ease-out infinite;}
+   .pulse-2{animation-delay:1.5s;} .pulse-3{animation-delay:3s;}
+   @keyframes pulse{0%{opacity:0.55; transform:scale(0.55);} 80%{opacity:0;} 100%{opacity:0; transform:scale(1.5);}}
+   .ring-band{fill:none; stroke:var(--gold); stroke-width:6;}
+   .ring-band-inner{fill:none; stroke:var(--paper-dim); stroke-width:1.5; opacity:0.6;}
+ 
+   .feature-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;}
+   .feature-card{background:var(--ink-soft); border:1px solid var(--line); border-radius:16px; padding:1.5rem; transition:transform 0.3s ease, box-shadow 0.3s ease;}
+   .feature-card:hover{transform:translateY(-3px); box-shadow:0 8px 25px rgba(47,74,38,0.1);}
+   .feature-card .feat-icon{width:32px; height:32px; margin-bottom:0.8rem;}
+   .feature-card .feat-icon *{fill:none; stroke:var(--gold); stroke-width:1.3;}
+   .feature-card .feat-label{font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--paper-dim); margin:0 0 0.7rem;}
+   .feature-card .feat-value{font-style:italic; font-size:1.05rem; line-height:1.45; color:var(--paper); margin:0;}
+ 
+   .today-card{display:flex; gap:2rem; align-items:center; background:var(--ink-soft); border:1px solid var(--line); border-radius:20px; padding:clamp(1.5rem,4vw,2.4rem); flex-wrap:wrap;}
+   .today-rose{width:150px; height:150px; flex-shrink:0;}
+   .today-text{flex:1; min-width:240px;}
+   .today-text .p-date{color:var(--paper-dim); font-size:0.72rem; letter-spacing:0.06em; margin-bottom:0.5rem;}
+   .today-text h3{font-style:italic; font-size:clamp(1.3rem,2.6vw,1.7rem); line-height:1.4; margin:0 0 1rem;}
+   .p-shared{display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem; color:var(--paper-dim); font-size:0.78rem;}
+   .dot-pair{display:flex;}
+   .dot-pair span{width:9px; height:9px; border-radius:50%; margin-left:-3px; border:1px solid var(--ink-soft);}
+   .p-tags{display:flex; flex-wrap:wrap; gap:0.5rem;}
+   .p-tag{font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:0.04em; color:var(--paper-dim);
+     border:1px solid var(--line-strong); border-radius:999px; padding:0.3em 0.8em;}
+ 
+   .reflect-card{background:var(--ink-soft); border:1px solid var(--line); border-radius:18px; padding:2rem clamp(1.5rem,4vw,2.4rem); max-width:600px;}
+   .reflect-text{font-style:italic; font-size:clamp(1.25rem,2.6vw,1.6rem); line-height:1.45; margin:0 0 1.5rem; min-height:3.2em; transition:opacity .25s ease;}
+   .reflect-text.fading{opacity:0;}
+   .reflect-controls{display:flex; align-items:center; gap:1rem; flex-wrap:wrap;}
+   .reflect-caption{color:var(--paper-dim); font-size:0.72rem;}
+ 
+   .philosophy{text-align:center; padding-top:clamp(3.2rem,7vw,5.5rem); padding-bottom:clamp(3.2rem,7vw,5.5rem);}
+   .philosophy blockquote{margin:0 auto; max-width:34ch; font-style:italic; font-size:clamp(1.4rem,3.4vw,2.2rem); line-height:1.35; color:var(--paper);}
+ 
+   footer{border-top:1px solid var(--line); padding:2.2rem clamp(1.25rem,4vw,3rem) 3rem;
+     display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; max-width:1100px; margin:0 auto;
+     color:var(--paper-dim); font-size:0.8rem;}
+ 
+   @media (max-width:860px){
+     .intro-grid{grid-template-columns:1fr;} .ring-viz{order:-1;}
+     .feature-grid{grid-template-columns:1fr;}
+     .today-card{flex-direction:column; text-align:center;}
+     .p-shared,.p-tags{justify-content:center;}
+     .hero-content{padding-top:clamp(4rem,10vh,6rem);}
+   }
+   @media (max-width:640px){
+     .hero-title{font-size:clamp(2rem,9vw,3rem);}
+     .hero-tagline{font-size:clamp(0.8rem,3vw,1rem);}
+     nav{padding:0.8rem 1rem;}
+     .nav-links{gap:0.8rem;}
+     .nav-links button{font-size:0.6rem;}
+   }
+   @media (prefers-reduced-motion:reduce){
+     html{scroll-behavior:auto;}
+     .hero-title,.hero-tagline,.hero-cta,.hero-eyebrow,.scroll-cue{animation:none !important; opacity:1 !important; transform:none !important;}
+     .scroll-cue .mouse::after{animation:none !important;}
+     .reveal{opacity:1 !important; transform:none !important; transition:none !important;}
+     .ring-glow{display:none;}
+   }
+ </style>
+ </head>
+ <body>
+ 
+   <div id="scroll-progress" role="none" aria-hidden="true"></div>
+ 
+   <nav id="navbar" role="navigation">
+     <button class="wordmark" onclick="window.scrollTo({top:0,behavior:'smooth'})">WeBloom</button>
+     <div class="nav-links">
+       <button onclick="scrollToId('about')">About</button>
+       <button onclick="scrollToId('features')">Features</button>
+       <button onclick="scrollToId('reflection')">Reflection</button>
+       <button onclick="scrollToId('philosophy')">Philosophy</button>
+     </div>
+   </nav>
+ 
+   <section class="hero" id="hero">
+     <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+     <div class="hero-overlay-top" aria-hidden="true"></div>
+     <div class="hero-overlay" aria-hidden="true"></div>
+     <div class="hero-scrim" aria-hidden="true"></div>
+     <div class="ring-glow" id="ring-glow" aria-hidden="true"></div>
+ 
+     <div class="hero-content">
+       <p class="hero-eyebrow">A new kind of wearable</p>
+       <h1 class="hero-title">We<span class="highlight">Bloom</span></h1>
+       <p class="hero-tagline">A ring, and the garden it grows.<br>Designed for presence, not distraction.</p>
+       <div class="hero-cta">
+         <button class="btn btn-primary" onclick="scrollToId('about')">Discover</button>
+         <button class="btn btn-ghost" onclick="scrollToId('features')">Explore features</button>
+       </div>
+     </div>
+ 
+     <button class="scroll-cue" id="scroll-cue" onclick="scrollToId('about')" aria-label="Scroll to explore">
+       <span>Scroll</span>
+       <div class="mouse" aria-hidden="true"></div>
+     </button>
+   </section>
+ 
+   <div class="content-section">
+ 
+     <section class="section" id="about">
+       <div class="intro-grid">
+         <div class="reveal">
+           <p class="eyebrow" style="margin-bottom:0.5rem;">What is WeBloom</p>
+           <h2 style="font-size:clamp(1.6rem,3.6vw,2.4rem); line-height:1.15; margin-bottom:1.4rem;">
+             A smart ring that measures<br>
+             <span style="font-style:italic;">what matters</span> and forgets the rest.
+           </h2>
+           <p>WeBloom reads your heart rate, voice, and motion - not to give you more data, but to surface the patterns that help you feel more present, connected, and alive. Every signal becomes a quiet reflection, not a dashboard.</p>
+           <p style="margin-top:1rem;">There are no notifications. No streaks. No scores. Just a garden that grows with your most meaningful moments.</p>
+         </div>
+         <div class="ring-viz reveal reveal-delay-2">
+           <svg class="ring-glyph" viewBox="0 0 240 240" aria-label="WeBloom ring concept">
+             <circle cx="120" cy="120" r="90" class="ring-band"/>
+             <circle cx="120" cy="120" r="80" class="ring-band-inner"/>
+             <circle cx="120" cy="120" r="90" class="pulse"/>
+             <circle cx="120" cy="120" r="90" class="pulse pulse-2"/>
+             <circle cx="120" cy="120" r="90" class="pulse pulse-3"/>
+             <circle cx="160" cy="90" r="8" fill="var(--rose)" opacity="0.7"/>
+             <circle cx="100" cy="150" r="5" fill="var(--sage)" opacity="0.6"/>
+             <circle cx="135" cy="60" r="6" fill="var(--amber)" opacity="0.5"/>
+           </svg>
+         </div>
+       </div>
+     </section>
+ 
+     <section class="section" id="features">
+       <div class="section-head reveal">
+         <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+           <path d="M4 18 C4 10 9 5 18 4 C17 12 13 17 4 18 Z"/>
+           <path d="M6 17 C9 13 12 11 15 8"/>
+         </svg>
+         <p class="eyebrow" style="margin:0;">Features</p>
+       </div>
+       <h2 class="reveal reveal-delay-1">What helps you bloom?</h2>
+       <p class="lead reveal reveal-delay-2">WeBloom reads heart rate, voice, and motion. What surfaces is never the numbers - it's the pattern they add up to.</p>
+ 
+       <div class="feature-grid">
+         <div class="feature-card reveal reveal-delay-3">
+           <svg class="feat-icon" viewBox="0 0 24 24" aria-hidden="true">
+             <circle cx="12" cy="12" r="7"/>
+             <path d="M12,7 C15,7 16,9.5 14,11 C12.5,12 10,11.5 10,9.5 C10,8 11.5,7.5 12.5,8.5"/>
+           </svg>
+           <p class="feat-label">BloomNote</p>
+           <p class="feat-value">Each evening, a single sentence -- not what happened, but what it felt like.</p>
+         </div>
+         <div class="feature-card reveal reveal-delay-4">
+           <svg class="feat-icon" viewBox="0 0 24 24" aria-hidden="true">
+             <rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/><circle cx="15" cy="14" r="1.6" fill="var(--gold)" stroke="none"/>
+           </svg>
+           <p class="feat-label">Bloom Calendar</p>
+           <p class="feat-value">Where every meaningful day blossoms into your garden -- quiet days belong too.</p>
+         </div>
+         <div class="feature-card reveal reveal-delay-5">
+           <svg class="feat-icon" viewBox="0 0 24 24" aria-hidden="true">
+             <circle cx="9" cy="12" r="5.5"/><circle cx="15" cy="12" r="5.5"/>
+           </svg>
+           <p class="feat-label">SynBloom</p>
+           <p class="feat-value">When two rings meet, shared moments grow in both gardens, at once.</p>
+         </div>
+         <div class="feature-card reveal reveal-delay-5">
+           <svg class="feat-icon" viewBox="0 0 24 24" aria-hidden="true">
+             <path d="M4 18 C4 10 9 5 18 4 C17 12 13 17 4 18 Z"/>
+           </svg>
+           <p class="feat-label">Personal Insights</p>
+           <p class="feat-value">Not a dashboard. A quiet understanding of what helps you feel most alive.</p>
+         </div>
+       </div>
+     </section>
+ 
+     <section class="section" id="reflection">
+       <div class="section-head reveal">
+         <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+           <circle cx="12" cy="12" r="7"/>
+           <path d="M12,7 C15,7 16,9.5 14,11 C12.5,12 10,11.5 10,9.5 C10,8 11.5,7.5 12.5,8.5"/>
+         </svg>
+         <p class="eyebrow" style="margin:0;">BloomNote - AI Reflection</p>
+       </div>
+       <h2 class="reveal reveal-delay-1">Not a summary. A reflection.</h2>
+       <p class="lead reveal reveal-delay-2">Every evening, WeBloom writes one sentence -- not a log of what happened, but a small reflection on what it felt like.</p>
+ 
+       <div class="today-card reveal reveal-delay-3">
+         <svg class="today-rose" viewBox="0 0 200 200" aria-hidden="true" id="today-rose-svg"></svg>
+         <div class="today-text">
+           <p class="p-date mono" id="today-date">JUL 25</p>
+           <h3 id="today-reflection">Today, you found calm in unexpected silence.</h3>
+           <div class="p-shared" id="today-shared" style="display:flex;">
+             <span class="dot-pair"><span style="background:var(--rose);"></span><span style="background:var(--gold);"></span></span>
+             <span>Shared with Mia</span>
+           </div>
+           <div class="p-tags" id="today-tags">
+             <span class="p-tag">Evening</span>
+             <span class="p-tag">At home</span>
+           </div>
+         </div>
+       </div>
+ 
+       <div class="reveal reveal-delay-4" style="margin-top:2rem;">
+         <div class="reflect-card">
+           <p class="reflect-text" id="reflect-text">Today, you found calm in unexpected silence.</p>
+           <div class="reflect-controls">
+             <button class="btn btn-ghost" onclick="cycleReflection()">Show another</button>
+             <span class="reflect-caption mono">Example reflections, not tied to a live day</span>
+           </div>
+         </div>
+       </div>
+     </section>
+ 
+     <section class="section philosophy" id="philosophy" style="border-top:1px solid var(--line);">
+       <div class="reveal">
+         <blockquote>Designed for presence, not distraction.<br>Built to preserve meaning, not data.</blockquote>
+       </div>
+     </section>
+ 
+     <footer>
+       <div class="serif" style="font-style:italic; font-size:1rem;">WeBloom -- a ring, and the garden it grows.</div>
+       <div class="mono">CONCEPT DEMO</div>
+     </footer>
+ 
+   </div>
+ 
+   <script>
+     const PETAL_PATH = "M0,0 C-7,-6 -8,-16 -3,-22 C-1,-24 1,-24 3,-22 C8,-16 7,-6 0,0 Z";
+     function rosePetal(radius, size, angle, color, opacity){
+       return '<path d="'+PETAL_PATH+'" fill="'+color+'" opacity="'+opacity+'" transform="rotate('+angle+') translate(0,'+(-radius)+') scale('+size+')"/>';
+     }
+     function roseInner(s, colorA, colorB){
+       let out = '';
+       for(let i=0;i<6;i++) out += rosePetal(9*s, 0.85*s, 60*i+10, (colorB && i%2===1)?colorB:colorA, 0.82);
+       for(let i=0;i<5;i++) out += rosePetal(5*s, 0.6*s, 72*i+32, colorA, 0.92);
+       for(let i=0;i<3;i++) out += rosePetal(1.6*s, 0.38*s, 120*i+60, colorA, 1);
+       out += '<circle cx="0" cy="0" r="'+(1.6*s)+'" fill="var(--gold)"/>';
+       return out;
+     }
+ 
+     document.getElementById('today-rose-svg').innerHTML = '<g transform="translate(100,100)">'+roseInner(2.6, 'var(--amber)', 'var(--gold)')+'</g>';
+ 
+     const REFLECTIONS = [
+       "Today, you found calm in unexpected silence.",
+       "You spent more time listening than speaking.",
+       "Something small made today lighter.",
+       "You stood still longer than you meant to.",
+       "You stayed, without trying to fix anything.",
+       "You laughed before you'd even had coffee.",
+       "The morning stayed quiet, and so did you."
+     ];
+     let reflectIndex = 0;
+     function cycleReflection(){
+       const el = document.getElementById('reflect-text');
+       el.classList.add('fading');
+       setTimeout(()=>{
+         reflectIndex = (reflectIndex+1) % REFLECTIONS.length;
+         el.textContent = REFLECTIONS[reflectIndex];
+         el.classList.remove('fading');
+       }, 220);
+     }
+ 
+     function scrollToId(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+ 
+     (function(){
+       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+       const hero = document.getElementById('hero');
+       const heroBg = document.getElementById('hero-bg');
+       const ringGlow = document.getElementById('ring-glow');
+       const scrollCue = document.getElementById('scroll-cue');
+       const navbar = document.getElementById('navbar');
+       const progress = document.getElementById('scroll-progress');
+ 
+       const revealEls = document.querySelectorAll('.reveal');
+       const observer = new IntersectionObserver((entries)=>{
+         entries.forEach(entry=>{
+           if(entry.isIntersecting){
+             entry.target.classList.add('visible');
+             observer.unobserve(entry.target);
+           }
+         });
+       }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+       revealEls.forEach(el=>observer.observe(el));
+ 
+       if(prefersReduced) return;
+ 
+       let ticking = false;
+ 
+       function update(){
+         const scrollY = window.scrollY;
+         const h = hero.offsetHeight;
+         const p = Math.min(scrollY / h, 1);
+ 
+         heroBg.style.transform = 'translateY('+(p * 50)+'px) scale('+(1 + p * 0.04)+')';
+ 
+         const ringIntensity = Math.max(0, 1 - Math.abs(p - 0.15) * 6);
+         ringGlow.style.opacity = String(Math.min(1, ringIntensity * 1.5));
+         ringGlow.style.transform = 'translate(-50%,-50%) scale('+(1 + ringIntensity * 0.08)+')';
+ 
+         scrollCue.style.opacity = String(Math.max(0, 1 - p * 3.5));
+         if(p > 0.3) scrollCue.classList.add('hidden');
+         else scrollCue.classList.remove('hidden');
+ 
+         if(scrollY > h * 0.85) navbar.classList.add('scrolled');
+         else navbar.classList.remove('scrolled');
+ 
+         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+         progress.style.width = (scrollY / docHeight * 100)+'%';
+ 
+         ticking = false;
+       }
+ 
+       window.addEventListener('scroll', ()=>{
+         if(!ticking){ requestAnimationFrame(update); ticking = true; }
+       }, {passive:true});
+ 
+       update();
+     })();
+   </script>
+ 
+ </body>
+ </html>
