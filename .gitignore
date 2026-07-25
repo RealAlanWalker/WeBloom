@@ -1,3 +1,15 @@
 node_modules/
 .DS_Store
 *.tmp
+
+# Interactive installation runtime data
+**/__pycache__/
+*.py[cod]
+installation/**/live/
+installation/**/*.csv
+installation/**/*.wav
+installation/**/*.log
+installation/**/*.pid
+installation/**/archive/
+installation/**/backup*/
+installation/**/headless*_profile*/

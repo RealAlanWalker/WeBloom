@@ -1,0 +1,27 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# IDE and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.lnk
+
+# Local operator notes
+AGENTS.md
+gcm-diagnose.log
+
+# Runtime captures and site-specific calibration are local artifacts.
+data/*
+!data/.gitkeep
+interaction_configs/
+
+# Arduino build output
+build/
+*.bin
+*.elf
+*.map
