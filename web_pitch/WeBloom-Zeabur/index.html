@@ -307,7 +307,7 @@
   .connection-stat .stat-num{font-family:'Fraunces',serif; font-style:italic; font-size:1.8rem; color:var(--amber);}
   .connection-stat .stat-label{font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--paper-dim); margin-top:0.2rem;}
 
-  /* SynBloom memory proof on Injective */
+  /* SynBloom shared-memory proof */
   .onchain-section{position:relative; min-height:100svh; overflow:hidden; color:#FDF7DF; background:radial-gradient(circle at 12% 8%,rgba(139,154,114,0.15),transparent 32%),radial-gradient(circle at 82% 72%,rgba(209,142,92,0.12),transparent 34%),#172116; border-top:1px solid rgba(253,247,223,0.09);}
   .onchain-section::before{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(110deg,rgba(253,247,223,0.025),transparent 34%);}
   .onchain-inner{position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,3rem);}
@@ -664,7 +664,7 @@
       </div>
 
       <div class="chain-flow reveal reveal-delay-1" aria-label="How a shared memory is anchored">
-        <div class="chain-flow-item"><b>Write together</b><span>Two names, one private memory, and consent from both people.</span></div>
+        <div class="chain-flow-item"><b>Write together</b><span>Two names, one private memory, and a clear privacy choice before sending.</span></div>
         <div class="chain-flow-item"><b>Grow the proof</b><span>A random salt and SHA-256 fingerprint shape the pair of flowers locally.</span></div>
         <div class="chain-flow-item"><b>Keep the receipt</b><span>Injective stores the fingerprint, while the readable memory stays with you.</span></div>
       </div>
@@ -794,7 +794,7 @@
 
   <footer>
     <div class="serif" style="font-style:italic; font-size:1rem;">WeBloom -- a ring, and the garden it grows.</div>
-    <div class="mono">CONCEPT DEMO</div>
+    <div class="mono">PRIVATE BY DEFAULT</div>
   </footer>
 </div>
 
@@ -837,7 +837,7 @@
 
     function scrollToId(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
 
-    // SynBloom x Injective: privacy-preserving memory proof
+    // SynBloom shared-memory integrity proof
     (function(){
       const NETWORK = {
         chainId: '0x59f',
